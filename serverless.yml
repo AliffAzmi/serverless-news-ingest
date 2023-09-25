@@ -1,0 +1,37 @@
+service: ingest-news
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  timeout: 12 # the timeout is 12 seconds (default is 6 seconds)
+  stage: prod # setting the env stage to dev, this will be visible in the routes
+  region: ap-southeast-1  
+  deploymentBucket: dp-serverlessdeploymentbuck-1d7acw5ipru9c
+  environment:
+    NC_MONGODB: mongodb://user:password@ip-address:port/db
+    MONGODB_URI_NC: mongodb://user:password@ip-address:port/collection
+    MONGODB_ATLAS_CLUSTER_URI: mongodb+srv://user:password@cluster0.mongodb.net/collection?retryWrites=true&w=majority
+    REUTERS_LOGIN_URI: https://domain.com/rmd/rest/xml/login
+    REUTERS_INTENT_URI: http://domain.com/rmd/rest/json
+    REDIS_HOST: redis-host.apse1.cache.amazonaws.com
+    REUTERS_WSA_USERNAME: username
+    REUTERS_WSA_PASSWORD: password
+
+functions:
+  ingest:
+    handler: handler.ingest
+    events:
+      - http:
+          path: ingest # path will be domain.name.com/prod/ingest
+          method: post
+          cors: true
+      - schedule: rate(10 minutes)
+  extend:
+    handler: handler.extend
+    events:
+      - http:
+          path: extend # path will be domain.name.com/prod/extend
+          method: get
+          cors: true
+plugins:
+- serverless-offline

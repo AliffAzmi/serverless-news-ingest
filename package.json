@@ -1,0 +1,20 @@
+{
+  "name": "ingest-news",
+  "version": "1.0.0",
+  "description": "Ingest news service.",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aliff Azmi",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "ioredis": "^4.19.4",
+    "mongoose": "^5.11.11"
+  },
+  "devDependencies": {
+    "serverless-offline": "^6.8.0"
+  }
+}
